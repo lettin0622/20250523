@@ -31,6 +31,32 @@ function draw() {
   if (predictions.length > 0) {
     let keypoints = predictions[0].scaledMesh;
 
+    // 填滿兩組點之間的區域為綠色
+    const indices2 = [76,77,90,180,85,16,315,404,320,307,306,408,304,303,302,11,72,73,74,184];
+    let shapePoints = [];
+
+    // 先加入第一組點
+    for (let i = 0; i < indices.length; i++) {
+      let idx = indices[i];
+      let [x, y] = keypoints[idx];
+      shapePoints.push([x, y]);
+    }
+    // 再加入第二組點（反向，避免交錯）
+    for (let i = indices2.length - 1; i >= 0; i--) {
+      let idx = indices2[i];
+      let [x, y] = keypoints[idx];
+      shapePoints.push([x, y]);
+    }
+
+    // 畫填滿的區域
+    noStroke();
+    fill(0, 255, 0, 150); // 半透明綠色
+    beginShape();
+    for (let pt of shapePoints) {
+      vertex(pt[0], pt[1]);
+    }
+    endShape(CLOSE);
+
     // 第一組紅色線
     stroke(255, 0, 0);
     strokeWeight(15);
@@ -44,7 +70,6 @@ function draw() {
     endShape();
 
     // 第二組藍色線
-    const indices2 = [76,77,90,180,85,16,315,404,320,307,306,408,304,303,302,11,72,73,74,184];
     stroke(0, 0, 255); // 藍色
     strokeWeight(15);
     noFill();
