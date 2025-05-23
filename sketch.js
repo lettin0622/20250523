@@ -30,6 +30,8 @@ function draw() {
 
   if (predictions.length > 0) {
     let keypoints = predictions[0].scaledMesh;
+
+    // 第一組紅色線
     stroke(255, 0, 0);
     strokeWeight(15);
     noFill();
@@ -40,5 +42,18 @@ function draw() {
       vertex(x, y);
     }
     endShape();
+
+    // 第二組藍色線
+    const indices2 = [76,77,90,180,85,16,315,404,320,307,306,408,304,303,302,11,72,73,74,184];
+    stroke(0, 0, 255); // 藍色
+    strokeWeight(15);
+    noFill();
+    for (let i = 0; i < indices2.length - 1; i++) {
+      let idxA = indices2[i];
+      let idxB = indices2[i + 1];
+      let [xA, yA] = keypoints[idxA];
+      let [xB, yB] = keypoints[idxB];
+      line(xA, yA, xB, yB);
+    }
   }
 }
